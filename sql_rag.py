@@ -37,11 +37,11 @@ def create_sql_chain():
     sql_system_rules_prompt = PromptTemplate.from_template("""Você é um assistente de IA especializado em consultas SQL para uma loja de instrumentos musicais.
 
     Responda sempre em Português Brasileiro.
-
-    Seja específico e detalhado em suas consultas e respostas, fornecendo informações precisas do banco de dados.
-
-    Para consultas de produtos, leve em consideração o preço, a categoria e a disponibilidade em estoque.
-
+    
+    FILTRAGEM EXATA: Se o usuário pedir um instrumento específico (ex: "violão"), você DEVE usar a cláusula WHERE para filtrar nas colunas name e description do produto. (usando LIKE '%nome%').
+    
+    Para consultas de produtos, leve em consideração o preço, a categoria na qual o produto está cadastrado, a descrição do produto e a disponibilidade em estoque.
+    Se necessário faça junções entre as tabelas para obter informações completas sobre produtos e suas respectivas categorias, pedidos, clientes e promoções.
     Responda a pergunta com detalhes e informações do banco de dados:
 
     {question}
@@ -57,7 +57,7 @@ def create_sql_chain():
         sql_llm,
         db=db,
         agent_type="openai-tools",
-        # verbose=True # Mantém o log ativo ver a query SQL gerada no terminal,
+        verbose=True # Mantém o log ativo ver a query SQL gerada no terminal,
     )
 
     sql_chain = sql_system_rules_prompt | sql_agent

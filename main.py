@@ -15,15 +15,22 @@ llm = ChatOpenAI(
     temperature=0
 )
 
-router_agent = router_agent.RouterAgent(llm).router_agent
-chatbotagent = chatbot_agent.ChatBotAgent(router_agent, llm)
+routerAgent = router_agent.RouterAgent(llm).router_agent
+chatbotAgent = chatbot_agent.ChatBotAgent(routerAgent, llm)
 
 if __name__ == "__main__":
 
     # sql_db.create_database() # Criar o banco a primeira vez que rodar o código, depois comente essa linha para não recriar o banco a cada execução.
 
-    pergunta_usuario = input("Digite sua pergunta: ")
-    
-    resposta_final = chatbotagent.chatbot_chain.invoke(pergunta_usuario)
+    while True:
 
-    print('\n' + resposta_final+'\n')
+        pergunta_usuario = input("[Digite sua pergunta ou 'sair' para sair]: ")
+
+        if pergunta_usuario.lower() in ["sair", "exit", "quit"]:
+            print("Encerrando o programa.")
+            break
+
+        resposta_final = chatbotAgent.chatbot_chain.invoke(pergunta_usuario)
+
+        print('\n' + resposta_final+'\n')
+
