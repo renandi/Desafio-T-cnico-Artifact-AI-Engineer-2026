@@ -8,7 +8,7 @@ from langchain_community.agent_toolkits import create_sql_agent
 
 
 def create_database():
-    # 1. Criação do Banco de Dados SQLite local
+    # Criação do Banco de Dados SQLite local
     engine = create_engine("sqlite:///loja_musica.db")
 
     # Dicionário mapeando o nome do arquivo para o nome da tabela no SQL
@@ -57,7 +57,7 @@ def create_sql_chain():
         sql_llm,
         db=db,
         agent_type="openai-tools",
-        verbose=True # Mantém o log ativo ver a query SQL gerada no terminal,
+        # verbose=True # Mantém o log ativo ver a query SQL gerada no terminal,
     )
 
     sql_chain = sql_system_rules_prompt | sql_agent
