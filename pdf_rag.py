@@ -37,10 +37,9 @@ def create_rag_chain():
 
     retriever = vector_store.as_retriever(search_kwargs={"k": 5})
 
-    # 3. Configuração do LLM
-    internal_llm = ChatOpenAI(
+    pdf_llm = ChatOpenAI(
         model="gpt-4o-mini",
-        temperature=0.4
+        temperature=0
     )
 
     # 4. Cadeia RAG
@@ -58,7 +57,7 @@ def create_rag_chain():
     rag_chain = (
         {"context": retriever, "question": RunnablePassthrough()}
         | prompt
-        | internal_llm
+        | pdf_llm
         | StrOutputParser()
     )
 
